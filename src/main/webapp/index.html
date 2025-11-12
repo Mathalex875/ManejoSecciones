@@ -1,0 +1,114 @@
+<!--
+    Nombre: Alexis González
+    Fecha: 11/11/2025
+    Descripción:
+    Este documento HTML permite el manejo de cabeceras HTTP y cookies.
+    Presenta un menú principal con enlaces para visualizar productos,
+    iniciar sesión y cerrar sesión dentro del sistema de manejo de sesiones.
+-->
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Manejo de Cookies HTTP</title>
+    <style>
+        /*
+         * Estilos generales del cuerpo de la página
+         * Se define una tipografía agradable y un fondo suave
+         */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #e0f7fa, #f1f8e9);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100vh;
+        }
+
+        /*
+         * Título principal
+         * Se centra y se le da color para destacar
+         */
+        h3 {
+            margin-top: 60px;
+            color: #00796b;
+            font-size: 26px;
+            text-align: center;
+        }
+
+        /*
+         * Lista de enlaces
+         * Se quita el estilo por defecto y se centra el contenido
+         */
+        ul {
+            list-style-type: none;
+            padding: 0;
+            margin-top: 50px;
+            text-align: center;
+        }
+
+        /*
+         * Cada elemento de la lista tiene separación y está centrado
+         */
+        li {
+            margin: 25px 0;
+        }
+
+        /*
+         * Estilos de los enlaces (botones del menú)
+         */
+        a {
+            text-decoration: none;
+            background-color: #4CAF50;
+            color: white;
+            padding: 14px 40px;
+            border-radius: 10px;
+            font-weight: bold;
+            font-size: 16px;
+            display: inline-block;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        /*
+         * Efecto al pasar el mouse sobre los enlaces
+         */
+        a:hover {
+            background-color: #388E3C;
+            transform: scale(1.05);
+        }
+
+        /*
+         * Pie de página informativo
+         */
+        footer {
+            position: absolute;
+            bottom: 15px;
+            text-align: center;
+            color: #666;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Título principal de la página -->
+<h3>Bienvenido</h3>
+
+<!-- Menú de navegación con enlaces a distintas funciones -->
+<ul>
+    <li><a href="productos">Mostrar productos</a></li>
+    <li><a href="login.html">Login</a></li>
+    <li><a href="logout">Logout</a></li>
+</ul>
+
+<!-- Pie de página -->
+<footer>
+    &copy; 2025 | Desarrollado por Alexis González
+</footer>
+
+</body>
+</html>

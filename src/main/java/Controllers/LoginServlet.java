@@ -1,185 +1,114 @@
-/*
- * Nombre: Alexis González
- * Fecha: 11/11/2025
- * Descripción: Servlet encargado de gestionar el inicio de sesión (login) de usuarios.
- * Verifica las credenciales ingresadas y mantiene la sesión activa del usuario.
- * Si el login es exitoso, muestra una pantalla personalizada de bienvenida con un contador
- * que indica cuántas veces ha iniciado sesión. Si las credenciales son incorrectas,
- * se muestra un mensaje de error.
- */
-
 package Controllers;
-
+/*
+Descripción: Esta clase se encarga de manejar el inicio de sesión de los usuarios.
+Si el usuario ya ha iniciado sesión, muestra un mensaje de bienvenida y el contador de visitas.
+Si no ha iniciado sesión, muestra el formulario de login.
+Si las creedenciales son incorrectas, devuelve un error 401.
+Autor: Alexis González
+Fecha: 2025/11/11
+*/
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.http.*;
+import models.Producto;
 import services.LoginService;
 import services.LoginServiceSessionImpl;
+import services.ProductoService;
+import services.ProductoServiceImpl;
 
+import javax.swing.text.html.Option;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 import java.util.Optional;
+import java.util.logging.Logger;
 
-// Mapeo del servlet: responde a las rutas /login y /login.html
 @WebServlet({"/login", "/login.html"})
 public class LoginServlet extends HttpServlet {
+    final static String USERNAME = "admin";
+    final static String PASSWORD = "123456";
+    private static int contadorVisitas = 0; // Contador global de visitas
 
-    // Credenciales predefinidas para autenticación básica
-    private static final String USERNAME = "admin";
-    private static final String PASSWORD = "12345";
-
-    /*
-     * Método doGet: Se ejecuta al acceder mediante el navegador (GET).
-     * Si el usuario ya inició sesión, muestra la página de bienvenida.
-     * Si no hay sesión, redirige al formulario Login.jsp.
-     */
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-            throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        HttpSession session = req.getSession();
+        Boolean visitado = (Boolean) session.getAttribute("visitado");
 
-        // Servicio de autenticación que verifica sesión activa
+        // Incrementa el contador solo la primera vez que el usuario entra en la sesión para que el metodo doGet no lo incremente cada vez que recarga la página
+        if (visitado == null || !visitado) {
+            contadorVisitas++;
+            session.setAttribute("visitado", true);
+        }
+
+        // Comprueba si el usuario está autenticado
         LoginService auth = new LoginServiceSessionImpl();
         Optional<String> usernameOptional = auth.getUsername(req);
 
-        // Si hay sesión activa, mostrar pantalla personalizada
-        if (usernameOptional.isPresent()) {
-            resp.setContentType("text/html;charset=UTF-8");
+        // Configura el tipo de contenido HTML
+        resp.setContentType("text/html;charset=UTF-8");
 
-            // Recuperar o crear la sesión
-            HttpSession session = req.getSession(false);
-            Integer contador = (Integer) session.getAttribute("contadorLogin");
-
-            if (contador == null) {
-                contador = 1; // Primera vez que inicia sesión
-                session.setAttribute("contadorLogin", contador);
-            }
-
-            // Diseño de la página HTML de bienvenida
-            try (PrintWriter out = resp.getWriter()) {
+        try (PrintWriter out = resp.getWriter()) {
+            // Si el usuario está logueado, muestra su panel, de lo contrario muestra el login
+            if (usernameOptional.isPresent()) {
                 out.println("<!DOCTYPE html>");
-                out.println("<html lang='es'>");
+                out.println("<html>");
                 out.println("<head>");
-                out.println("    <meta charset='UTF-8'>");
-                out.println("    <title>Bienvenido " + usernameOptional.get() + "</title>");
-                out.println("    <style>");
-                out.println("        body {");
-                out.println("            font-family: 'Segoe UI', Arial, sans-serif;");
-                out.println("            background: linear-gradient(120deg, #89f7fe, #66a6ff);");
-                out.println("            margin: 0;");
-                out.println("            height: 100vh;");
-                out.println("            display: flex;");
-                out.println("            justify-content: center;");
-                out.println("            align-items: center;");
-                out.println("        }");
-                out.println("        .container {");
-                out.println("            background-color: #fff;");
-                out.println("            padding: 40px;");
-                out.println("            border-radius: 15px;");
-                out.println("            box-shadow: 0 4px 15px rgba(0,0,0,0.2);");
-                out.println("            text-align: center;");
-                out.println("            width: 400px;");
-                out.println("        }");
-                out.println("        h1 { color: #0078D7; }");
-                out.println("        .contador { color: #2E8B57; font-weight: bold; margin: 15px 0; }");
-                out.println("        a { display: inline-block; color: #fff; background-color: #0078D7;");
-                out.println("            padding: 10px 20px; border-radius: 8px; text-decoration: none;");
-                out.println("            margin: 10px; transition: background 0.3s ease; }");
-                out.println("        a:hover { background-color: #005fa3; }");
-                out.println("    </style>");
+                out.println("<title>Hola " + usernameOptional.get() + "</title>");
+                // Estilos CSS
+                // Reemplaza la sección de estilos en el doGet con esto:
+                out.println("<style>");
+                out.println("body {font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); margin: 0; padding: 0; min-height: 100vh; display: flex; align-items: center; justify-content: center;}");
+                out.println(".container {max-width: 500px; width: 90%; background: rgba(255, 255, 255, 0.95); padding: 40px 30px; border-radius: 20px; text-align: center; box-shadow: 0 15px 35px rgba(0,0,0,0.1); backdrop-filter: blur(10px);}");
+                out.println("h1 {color: #2c3e50; margin-bottom: 20px; font-weight: 600; font-size: 2.2em;}");
+                out.println("p {color: #7f8c8d; font-size: 16px; line-height: 1.6; margin: 10px 0;}");
+                out.println(".contador {background: #3498db; color: white; padding: 8px 16px; border-radius: 20px; display: inline-block; font-weight: bold; margin: 10px 0;}");
+                out.println(".btn {display: inline-block; background: linear-gradient(45deg, #3498db, #2980b9); color: white; border: none; padding: 12px 25px; margin: 10px 8px; cursor: pointer; border-radius: 25px; text-decoration: none; font-size: 14px; font-weight: 500; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);}");
+                out.println(".btn:hover {transform: translateY(-2px); box-shadow: 0 6px 20px rgba(52, 152, 219, 0.4);}");
+                out.println(".btn-logout {background: linear-gradient(45deg, #e74c3c, #c0392b); box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);}");
+                out.println(".btn-logout:hover {box-shadow: 0 6px 20px rgba(231, 76, 60, 0.4);}");
+                out.println("</style>");
+                // Script JS para confirmar cierre de sesión
+                out.println("<script>");
+                out.println("function confirmarCerrarSesion() {");
+                out.println("  if(confirm('¿Seguro que deseas cerrar sesión?')) {");
+                out.println("    window.location.href = '" + req.getContextPath() + "/logout';");
+                out.println("  }");
+                out.println("}");
+                out.println("</script>");
                 out.println("</head>");
                 out.println("<body>");
-                out.println("    <div class='container'>");
-                out.println("        <h1>¡Hola, " + usernameOptional.get() + "!</h1>");
-                out.println("        <p>Has iniciado sesión con éxito.</p>");
-                out.println("        <p class='contador'>Número de veces que has iniciado sesión: " + contador + "</p>");
-                out.println("        <a href='" + req.getContextPath() + "/index.html'>Volver al inicio</a>");
-                out.println("        <a href='" + req.getContextPath() + "/logout'>Cerrar sesión</a>");
-                out.println("    </div>");
+                out.println("<div class='container'>");
+                out.println("<h1>Hola " + usernameOptional.get() + "</h1>");
+                out.println("<p>Haz iniciado sesión con éxito!</p>");
+                out.println("<p>Contador de visitas: <b>" + contadorVisitas + "</b></p>");
+                // Botones de navegación
+                out.println("<button class='btn' onclick=\"location.href='" + req.getContextPath() + "/index.html'\">Volver al Inicio</button>");
+                out.println("<button class='btn' onclick='confirmarCerrarSesion()'>Cerrar Sesión</button>");
+                out.println("</div>");
                 out.println("</body>");
                 out.println("</html>");
+            } else {
+                // Si no está logueado, muestra el JSP del login
+                req.setAttribute("contador", contadorVisitas);
+                getServletContext().getRequestDispatcher("/login.jsp").forward(req, resp);
             }
-
-        } else {
-            // Si no hay sesión activa → redirigir al formulario de login
-            getServletContext().getRequestDispatcher("/Login.jsp").forward(req, resp);
         }
     }
 
-    /*
-     * Método doPost: Se ejecuta al enviar el formulario de login.
-     * Valida las credenciales ingresadas y crea la sesión del usuario.
-     * Si el login falla, muestra un mensaje de error.
-     */
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp)
-            throws ServletException, IOException {
-
-        // Obtener los parámetros ingresados en el formulario
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        // Captura credenciales enviadas por el formulario
         String username = req.getParameter("username");
         String password = req.getParameter("password");
 
-        // Validar credenciales (ignorando espacios en blanco accidentales)
-        if (USERNAME.equals(username.trim()) && PASSWORD.equals(password.trim())) {
-            HttpSession session = req.getSession(true);
+        // Validación del usuario y contraseña del jsp
+        if (USERNAME.equals(username) && PASSWORD.equals(password)) {
+            HttpSession session = req.getSession();
             session.setAttribute("username", username);
-
-            // Contador de inicios de sesión
-            Integer contador = (Integer) session.getAttribute("contadorLogin");
-            if (contador == null) {
-                contador = 1;
-            } else {
-                contador++;
-            }
-            session.setAttribute("contadorLogin", contador);
-
-            // Redirigir al servlet /login para mostrar bienvenida
-            resp.sendRedirect(req.getContextPath() + "/login");
+            resp.sendRedirect(req.getContextPath() + "/login.html");
         } else {
-            // Si las credenciales son incorrectas → mostrar mensaje de error con diseño
-            resp.setContentType("text/html;charset=UTF-8");
-            try (PrintWriter out = resp.getWriter()) {
-                out.println("<!DOCTYPE html>");
-                out.println("<html lang='es'>");
-                out.println("<head>");
-                out.println("    <meta charset='UTF-8'>");
-                out.println("    <title>Acceso Denegado</title>");
-                out.println("    <style>");
-                out.println("        body {");
-                out.println("            font-family: 'Segoe UI', Arial, sans-serif;");
-                out.println("            background: linear-gradient(120deg, #ff9a9e, #fad0c4);");
-                out.println("            display: flex;");
-                out.println("            justify-content: center;");
-                out.println("            align-items: center;");
-                out.println("            height: 100vh;");
-                out.println("            margin: 0;");
-                out.println("        }");
-                out.println("        .error-box {");
-                out.println("            background-color: #fff;");
-                out.println("            padding: 40px;");
-                out.println("            border-radius: 15px;");
-                out.println("            box-shadow: 0 4px 15px rgba(0,0,0,0.2);");
-                out.println("            text-align: center;");
-                out.println("            width: 400px;");
-                out.println("        }");
-                out.println("        h2 { color: #E63946; }");
-                out.println("        a { color: #fff; background-color: #E63946;");
-                out.println("            padding: 10px 20px; border-radius: 8px; text-decoration: none;");
-                out.println("            display: inline-block; margin-top: 15px; transition: background 0.3s ease; }");
-                out.println("        a:hover { background-color: #c72c41; }");
-                out.println("    </style>");
-                out.println("</head>");
-                out.println("<body>");
-                out.println("    <div class='error-box'>");
-                out.println("        <h2>Credenciales incorrectas</h2>");
-                out.println("        <p>Por favor, verifica tu usuario y contraseña.</p>");
-                out.println("        <a href='" + req.getContextPath() + "/Login.jsp'>Intentar nuevamente</a>");
-                out.println("    </div>");
-                out.println("</body>");
-                out.println("</html>");
-            }
+            // En caso de error, muestra mensaje de no autorizado
+            resp.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Lo sentimos, no esta autorizado a ingresar a esta página");
         }
     }
 }

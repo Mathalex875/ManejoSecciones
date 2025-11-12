@@ -1,28 +1,19 @@
-/*
- * Nombre: Alexis González
- * Fecha: 11/11/2025
- * Descripción:
- * Esta interfaz define el servicio de autenticación para obtener el nombre
- * de usuario asociado a una sesión HTTP.
- * Su implementación permite verificar si un usuario está logueado
- * y recuperar su información desde la solicitud (HttpServletRequest).
- */
-
 package services;
-
+/*
+Descripcion:  Interfaz que define los métodos del servicio de autenticación (login).
+ Permite obtener el nombre de usuario desde una solicitud HTTP.
+Autor: Alexis González
+Fecha: 2025/11/12
+ */
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.Optional;
 
 public interface LoginService {
 
     /*
-     * Método: getUsername
-     * Parámetro: HttpServletRequest request - Permite acceder a los datos de la solicitud HTTP.
-     * Retorna: Optional<String> - Contiene el nombre de usuario si existe una sesión activa,
-     *                              o un Optional vacío si el usuario no ha iniciado sesión.
-     * Descripción:
-     * Este método se utiliza para obtener el nombre del usuario logueado
-     * a partir de la información de sesión almacenada en la petición HTTP.
+     * Obtiene el nombre de usuario almacenado en la sesión HTTP.
+     * @param req Objeto HttpServletRequest que contiene la sesión activa.
+     * @return Un Optional con el nombre de usuario si existe, o vacío si no hay sesión válida.
      */
-    Optional<String> getUsername(HttpServletRequest request);
+    Optional<String> getUsername(HttpServletRequest req);
 }

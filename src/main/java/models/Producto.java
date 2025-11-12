@@ -1,75 +1,60 @@
+package models;
 /*
- * Nombre: Alexis González
- * Fecha: 11/11/2025
- * Descripción: Clase modelo que representa un producto dentro del sistema.
- * Contiene los atributos básicos de un producto como id, nombre, tipo y precio.
- * Implementa encapsulamiento mediante el uso de atributos privados y métodos
- * getters y setters para el acceso controlado a cada campo.
+Descripcion: Clase que representa un producto dentro del sistema.
+Contiene los atributos básicos de un producto y sus métodos de acceso.
+Autor: Alexis González
+Fecha: 2025/11/12
  */
 
-package models;
-
 public class Producto {
-    // Encapsulamiento: se declaran las variables privadas del objeto Producto
-    private Long idProducto; // Identificador único del producto
-    private String nombre;   // Nombre del producto
-    private String Tipo;     // Tipo o categoría del producto
-    private double precio;   // Precio del producto
+    private Long id;
+    private String nombre;
+    private String tipo;
+    private double precio;
 
-    // Constructor vacío: permite crear un producto sin inicializar los valores
-    public Producto() {}
+    // Constructor vacío (necesario para frameworks o instanciación manual sin parámetros)
+    public Producto() {
+    }
 
-    /*
-     * Constructor con parámetros: inicializa los valores del producto
-     * al momento de crear el objeto con datos específicos.
-     */
-    public Producto(Long idProducto, String nombre, String Tipo, double precio) {
-        this.idProducto = idProducto;
+    // Constructor que inicializa todos los atributos del producto
+    public Producto(Long id, String nombre, String tipo, double precio) {
+        this.id = id;
         this.nombre = nombre;
-        this.Tipo = Tipo;
+        this.tipo = tipo;
         this.precio = precio;
     }
 
-    // Métodos getter y setter para acceder y modificar los atributos del producto
+    // Getter y Setter para cada atributo, permitiendo el acceso y modificación de los mismos
 
-    // Obtiene el ID del producto
-    public Long getIdProducto() {
-        return idProducto;
+    public Long getId() {
+        return id;
     }
 
-    // Establece el ID del producto
-    public void setIdProducto(Long idProducto) {
-        this.idProducto = idProducto;
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    // Obtiene el nombre del producto
     public String getNombre() {
         return nombre;
     }
 
-    // Establece el nombre del producto
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
 
-    // Obtiene el tipo o categoría del producto
     public String getTipo() {
-        return Tipo;
+        return tipo;
     }
 
-    // Establece el tipo o categoría del producto
     public void setTipo(String tipo) {
-        Tipo = tipo;
+        this.tipo = tipo;
     }
 
-    // Obtiene el precio del producto
     public double getPrecio() {
         return precio;
     }
 
-    // Establece el precio del producto
     public void setPrecio(double precio) {
         this.precio = precio;
     }
 }
-

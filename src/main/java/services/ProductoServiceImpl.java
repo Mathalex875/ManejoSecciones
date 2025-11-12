@@ -1,36 +1,32 @@
-/*
- * Nombre: Alexis González
- * Fecha: 11/11/2025
- * Descripción:
- * Esta clase implementa la interfaz ProductoService y proporciona
- * una lista de productos de ejemplo.
- * Simula la obtención de datos desde una fuente externa (como una base de datos),
- * devolviendo una lista de objetos Producto con información precargada.
- */
-
 package services;
-
+/*
+Descripcion: Clase que implementa el servicio de productos.
+Proporcionando una lista de productos predefinidos.
+Autor: Alexis González
+Fecha: 2025/11/12
+ */
 import models.Producto;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 public class ProductoServiceImpl implements ProductoService {
-
     /*
-     * Método: listar
-     * Retorna: List<Producto> - Una lista con objetos de tipo Producto.
-     * Descripción:
-     * Este método devuelve una lista estática de productos con datos de ejemplo.
-     * En una aplicación real, esta información podría provenir de una base de datos
-     * o de una API externa. Aquí se utiliza Arrays.asList() para crear y retornar
-     * una lista inmutable con algunos productos definidos manualmente.
+     * Retorna una lista simulada de productos (modo estático, sin base de datos).
+     * @return Lista de objetos Producto con datos de ejemplo.
      */
     @Override
     public List<Producto> listar() {
-        return Arrays.asList(
-                new Producto(1L, "Laptop", "Electrónico", 256.20),
-                new Producto(2L, "Computadora", "Electrónico", 230.60),
-                new Producto(3L, "Cocina", "Electrodoméstico", 300.40)
-        );
+        //Se retorna una lista de productos predefinidos
+        return Arrays.asList(new Producto(1L,"laptop","Computacion", 874.21),
+                new Producto(2L, "Mouse", "Inalambrico", 20.00),
+                new Producto(3L,"Samsung", "Samsung", 2000.00),
+                new Producto(4L,"Impresora", "Electronico",500.00),
+                new Producto(5L,"Cocina","Electrodomestico",450.00));
+    }
+
+    @Override
+    public Optional<Producto> porid(Long id) {
+        return listar().stream().filter(p -> p.getId().equals(id)).findAny();
     }
 }

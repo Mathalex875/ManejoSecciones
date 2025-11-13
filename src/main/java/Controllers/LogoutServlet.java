@@ -1,10 +1,5 @@
 package Controllers;
-/*
-Descripción: Esta clase se encarga de manejar el cierre de sesión de los usuarios.
-Si el usuario está autenticado, invalida la sesión y redirige a la página principal
-Autor: Alexis González
-Fecha: 2025/11/12
-*/
+
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -29,7 +24,7 @@ public class LogoutServlet extends HttpServlet {
         // Si hay un usuario logueado, invalida la sesión
         if(username.isPresent()) {
             HttpSession session = req.getSession();
-            session.invalidate(); // Cierra sesión eliminando datos de la sesión para que se vuelva a crear y asi funcione el contador
+            session.invalidate(); // Esto hará que la próxima vez cuente como nueva visita
         }
 
         // Redirige al usuario a la página principal

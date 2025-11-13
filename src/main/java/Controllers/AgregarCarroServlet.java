@@ -15,31 +15,32 @@ import services.ProductoServiceImpl;
 import java.io.IOException;
 import java.util.Optional;
 
-
 @WebServlet("/agregar-carro")
 public class AgregarCarroServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        try {
+            Long id = Long.parseLong(req.getParameter("id"));
+            ProductoService service = new ProductoServiceImpl();
+            Optional<Producto> producto = service.porid(id);
 
-        ProductoService service = new ProductoServiceImpl();
+            if (producto.isPresent()) {
+                ItemCarro item = new ItemCarro(1, producto.get());
+                HttpSession session = req.getSession();
+                DetalleCarro detalleCarro;
 
-        Long id = Long.parseLong(String.valueOf(req.getDateHeader("id")));
-
-        Optional<Producto> producto = service.porid(id);
-
-        if (producto.isPresent()) {
-            ItemCarro item = new ItemCarro(1, producto.get());
-            HttpSession session = req.getSession();
-            DetalleCarro detalleCarro;
-
-            if (session.getAttribute("carro") == null) {
-                detalleCarro = new DetalleCarro();
-                session.setAttribute("carro", detalleCarro);
-            } else {
-                detalleCarro = (DetalleCarro) session.getAttribute("carro");
+                if (session.getAttribute("carro") == null) {
+                    detalleCarro = new DetalleCarro();
+                    session.setAttribute("carro", detalleCarro);
+                } else {
+                    detalleCarro = (DetalleCarro) session.getAttribute("carro");
+                }
+                detalleCarro.addItemCarro(item);
             }
-            detalleCarro.addItemCarro(item);
+            // Redirige al servlet en lugar del JSP directamente
+            resp.sendRedirect(req.getContextPath() + "/ver-carro");
+        } catch (NumberFormatException e) {
+            resp.sendRedirect(req.getContextPath() + "/productos");
         }
-        resp.sendRedirect(req.getContextPath()+ "/ver-carro.jsp");
     }
 }

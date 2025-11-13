@@ -1,0 +1,100 @@
+/* estilos.css — Rum Rum Tienda */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    color: #111;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 900px;
+    margin: 40px auto;
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    text-align: center;
+}
+
+h1 {
+    color: #0a3d62;
+    margin-bottom: 10px;
+}
+
+h2 {
+    color: #1e90ff;
+    margin-bottom: 30px;
+}
+
+table {
+    margin: 0 auto;
+    border-collapse: collapse;
+    width: 90%;
+    background-color: white;
+}
+
+th, td {
+    border: 1px solid #999;
+    padding: 10px 15px;
+    text-align: center;
+}
+
+th {
+    background-color: #0a3d62;
+    color: white;
+}
+
+tr:nth-child(even) {
+    background-color: #f0f0f0;
+}
+
+tr:hover {
+    background-color: #dff0ff;
+}
+
+.btn, .botones button {
+    display: inline-block;
+    background-color: #0a3d62;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    margin: 15px 10px;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: 0.3s;
+}
+
+.btn:hover, .botones button:hover {
+    background-color: #1e90ff;
+}
+
+a {
+    color: #0a3d62;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+a:hover {
+    color: #1e90ff;
+}
+
+.botones {
+    margin-top: 25px;
+}
+
+/* ============================= */
+/* Ocultar botones al imprimir */
+@media print {
+    .botones {
+        display: none;
+    }
+
+    body {
+        background-color: white;
+    }
+
+    table {
+        width: 100%;
+    }
+}

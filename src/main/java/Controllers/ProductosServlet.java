@@ -95,23 +95,12 @@ public class ProductosServlet extends HttpServlet {
             out.println("<p class='subtitle'>Descubre nuestra amplia selección de productos de calidad</p>");
 
             // Si el usuario está logueado, muestra un mensaje de bienvenida
+            // Si el usuario está logueado, muestra un mensaje de bienvenida, de lo contrario salta el bucle
             if (usernameOptional.isPresent()) {
-                out.println("<div class='welcome'>¡Bienvenido de nuevo, " + usernameOptional.get() + "! 👋</div>");
+                out.println("<div class='welcome'>Bienvenido de nuevo" + usernameOptional.get() + " !</div>");
             }
-            out.println("</div>");
-
-            // Estadísticas rápidas
-            out.println("<div class='stats'>");
-            out.println("<div class='stat-item'><div class='stat-number'>" + productos.size() + "</div><div class='stat-label'>Productos Totales</div></div>");
-            if (usernameOptional.isPresent()) {
-                out.println("<div class='stat-item'><div class='stat-number'>" + productos.stream().mapToDouble(Producto::getPrecio).average().orElse(0) + "</div><div class='stat-label'>Precio Promedio</div></div>");
-            }
-            out.println("</div>");
-
-            // Tabla de productos
-            out.println("<div class='table-container'>");
+            //  Tabla de productos
             out.println("<table>");
-            out.println("<thead>");
             out.println("<tr>");
             out.println("<th>ID</th>");
             out.println("<th>Nombre</th>");
@@ -119,35 +108,30 @@ public class ProductosServlet extends HttpServlet {
             // Solo muestra el precio si el usuario está autenticado
             if (usernameOptional.isPresent()) {
                 out.println("<th>Precio</th>");
-                out.println("<th>Acciones</th>");
+                out.println("<th>Opciones</th>");
             }
             out.println("</tr>");
-            out.println("</thead>");
-            out.println("<tbody>");
-
             // Itera sobre los productos y los muestra en la tabla
             productos.forEach(producto -> {
                 out.println("<tr>");
-                out.println("<td><strong>" + producto.getId() + "</strong></td>");
+                out.println("<td>" + producto.getId() + "</td>");
                 out.println("<td>" + producto.getNombre() + "</td>");
                 out.println("<td>" + producto.getTipo() + "</td>");
                 if (usernameOptional.isPresent()) {
-                    out.println("<td class='price'>$" + String.format("%.2f", producto.getPrecio()) + "</td>");
-                    out.println("<td><a class='action-btn' href=\"" + req.getContextPath() + "/agregar-carro?id=" + producto.getId() + "\">🛒 Agregar</a></td>");
+                    out.println("<td>$" + producto.getPrecio() + "</td>");
+                    out.println("<td><a href=\""
+                            +req.getContextPath()
+                            +"/agregar-carro?id="
+                            + producto.getId()
+                            +"\">Agregar Producto <a/> </td>");
                 }
                 out.println("</tr>");
             });
 
-            out.println("</tbody>");
             out.println("</table>");
-            out.println("</div>");
-
-            // Botones de acción
-            out.println("<div class='footer'>");
-            out.println("<button class='btn' onclick=\"location.href='" + req.getContextPath() + "/index.html'\">🏠 Volver al Inicio</button>");
-            if (usernameOptional.isPresent()) {
-                out.println("<button class='btn btn-secondary' onclick=\"location.href='" + req.getContextPath() + "/carro'\">🛒 Ver Carrito</button>");
-            }
+            // Botón para regresar al inicio
+            out.println("<div>");
+            out.println("<button class='btn' onclick=\"location.href='" + req.getContextPath() + "/index.html'\">Volver al Inicio</button>");
             out.println("</div>");
             out.println("</div>");
             out.println("</body>");

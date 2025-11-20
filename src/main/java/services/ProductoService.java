@@ -15,5 +15,7 @@ public interface ProductoService {
      */
     List<Producto> listar();
     Optional<Producto> porid(Long id);
+
+    Optional<Producto> porId(Long id);
 }
 

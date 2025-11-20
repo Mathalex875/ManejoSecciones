@@ -1,60 +1,65 @@
 package models;
-/*
-Descripcion: Clase que representa un producto dentro del sistema.
-Contiene los atributos básicos de un producto y sus métodos de acceso.
-Autor: Alexis González
-Fecha: 2025/11/12
- */
+
+import java.time.LocalDate;
 
 public class Producto {
     private Long id;
     private String nombre;
-    private String tipo;
+    private Categoria categoria;
     private double precio;
+    private int stock;
+    private String descripcion;
+    private LocalDate fechaElaboracion;
+    private LocalDate fechaCaducidad;
+    private int estado;
 
-    // Constructor vacío (necesario para frameworks o instanciación manual sin parámetros)
-    public Producto() {
-    }
+    public Producto() {}
 
-    // Constructor que inicializa todos los atributos del producto
-    public Producto(Long id, String nombre, String tipo, double precio) {
+    // Constructor actualizado
+    public Producto(Long id, String nombre, Categoria categoria, double precio,
+                    int stock, String descripcion, LocalDate fechaElaboracion,
+                    LocalDate fechaCaducidad, int estado) {
         this.id = id;
         this.nombre = nombre;
-        this.tipo = tipo;
+        this.categoria = categoria;
         this.precio = precio;
+        this.stock = stock;
+        this.descripcion = descripcion;
+        this.fechaElaboracion = fechaElaboracion;
+        this.fechaCaducidad = fechaCaducidad;
+        this.estado = estado;
     }
 
-    // Getter y Setter para cada atributo, permitiendo el acceso y modificación de los mismos
-
-    public Long getId() {
-        return id;
+    public Producto(long l, String mouseInalámbrico, String tecnología, double v) {
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    // Getters y Setters
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    public String getNombre() {
-        return nombre;
-    }
+    public String getNombre() { return nombre; }
+    public void setNombre(String nombre) { this.nombre = nombre; }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
+    public Categoria getCategoria() { return categoria; }
+    public void setCategoria(Categoria categoria) { this.categoria = categoria; }
 
-    public String getTipo() {
-        return tipo;
-    }
+    public double getPrecio() { return precio; }
+    public void setPrecio(double precio) { this.precio = precio; }
 
-    public void setTipo(String tipo) {
-        this.tipo = tipo;
-    }
+    public int getStock() { return stock; }
+    public void setStock(int stock) { this.stock = stock; }
 
-    public double getPrecio() {
-        return precio;
-    }
+    public String getDescripcion() { return descripcion; }
+    public void setDescripcion(String descripcion) { this.descripcion = descripcion; }
 
-    public void setPrecio(double precio) {
-        this.precio = precio;
-    }
+    public LocalDate getFechaElaboracion() { return fechaElaboracion; }
+    public void setFechaElaboracion(LocalDate fechaElaboracion) { this.fechaElaboracion = fechaElaboracion; }
+
+    public LocalDate getFechaCaducidad() { return fechaCaducidad; }
+    public void setFechaCaducidad(LocalDate fechaCaducidad) { this.fechaCaducidad = fechaCaducidad; }
+
+    public int getEstado() { return estado; }
+    public void setEstado(int estado) { this.estado = estado; }
+
+
 }

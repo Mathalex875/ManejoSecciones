@@ -2,15 +2,19 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Manejo de Sesiones</title>
+    <title>Sistema de Ventas</title>
     <link rel="stylesheet" href="css/index.css">
 </head>
 <body>
-<h3>Manejo de Sesiones</h3>
+<h3>Sistema de Ventas - Menú Principal</h3>
 <ul>
-
-    <li><button class="btn" onclick="location.href='productos'">Mostrar Productos</button></li>
-    <li><button class="btn" onclick="location.href='login'">Login</button></li>
+    <li><a href="productos" class="btn">Mostrar Productos</a></li>
+    <li><a href="login" class="btn">Login</a></li>
+    <li>
+        <form action="testConexion" method="get" style="display:inline;">
+            <button type="submit" class="btn">Probar conexión a MySQL</button>
+        </form>
+    </li>
 </ul>
 </body>
 </html>
